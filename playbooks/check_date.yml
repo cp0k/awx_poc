@@ -1,6 +1,6 @@
 ---
 - name: Check date on hosts in the "poc" group
-  hosts: poc
+  hosts: all
   gather_facts: no
   roles:
     - display_date
