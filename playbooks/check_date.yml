@@ -1,7 +1,12 @@
 ---
 - name: Check date on hosts in the "poc" group
-  hosts: all
+  hosts: poc
   gather_facts: no
-  roles:
-    - display_date
+  tasks:
+    - name: Get the current date and time
+      command: date
+      register: current_date
 
+    - name: Display the current date and time
+      debug:
+        msg: "The current date and time is: {{ current_date.stdout }}"
