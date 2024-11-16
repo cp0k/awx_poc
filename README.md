@@ -46,7 +46,8 @@ Initialize a New Role: To add a new role to the roles/ directory, use:
 
 
 ansible-galaxy init roles/<role_name>
-Run a Playbook: Execute a playbook with:
+
+## Run a Playbook: Execute a playbook with:
 
 
 ansible-playbook -i inventories/<environment> playbooks/<playbook_name>.yml
