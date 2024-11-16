@@ -22,37 +22,33 @@ This repository contains Ansible playbooks, roles, and configurations used to ma
 
 1. **Clone the Repository**
 
-   ```bash
    git clone https://github.com/yourusername/your-repo-name.git
    cd your-repo-name
-Install Requirements
+
+## Install Requirements
 
 If your project uses any external roles or collections, install them using:
 
-bash
-Copy code
+
 ansible-galaxy install -r requirements.yml
-Set Up Inventory
+## Set Up Inventory
 
 Customize the inventory files under the inventories/ directory for your environment.
 
-Run Playbooks
+## Run Playbooks
 
 Run a playbook with the following command:
 
-bash
-Copy code
+
 ansible-playbook -i inventories/production playbooks/your_playbook.yml
-Project Commands
+## Project Commands
 Initialize a New Role: To add a new role to the roles/ directory, use:
 
-bash
-Copy code
+
 ansible-galaxy init roles/<role_name>
 Run a Playbook: Execute a playbook with:
 
-bash
-Copy code
+
 ansible-playbook -i inventories/<environment> playbooks/<playbook_name>.yml
 Contributing
 Fork the repository.
