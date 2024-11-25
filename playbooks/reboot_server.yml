@@ -1,11 +1,28 @@
 ---
-- name: Reboot server using TSW API
+- name: Reboot server using TSW API and notify Slack
   hosts: localhost
   gather_facts: no
   vars:
     api_url: "https://api.tsw.io/v2/Metal/{{ server_id }}/Reboot"
     api_key: "{{ lookup('env', 'TSW_API_KEY') }}"
+    slack_webhook_url: "https://hooks.slack.com/services/TXXXX/BXXXX/XXXX"  # Replace with your Slack Webhook URL
+    slack_channel: "#awx-tower"  # Replace with your desired Slack channel
   tasks:
+    - name: Notify Slack of workflow approval
+      uri:
+        url: "{{ slack_webhook_url }}"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "channel": "{{ slack_channel }}",
+            "username": "AWX Bot",
+            "text": ":hourglass: The AWX workflow to reboot server {{ server_id }} has been approved and is starting.",
+            "icon_emoji": ":robot_face:"
+          }
+        status_code: 200
+
     - name: Validate that server_id is provided
       fail:
         msg: "The variable 'server_id' must be provided."
@@ -25,3 +42,18 @@
     - name: Debug response from TSW API
       debug:
         var: result.json
+
+    - name: Notify Slack of successful completion
+      uri:
+        url: "{{ slack_webhook_url }}"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: |
+          {
+            "channel": "{{ slack_channel }}",
+            "username": "AWX Bot",
+            "text": ":white_check_mark: The AWX workflow to reboot server {{ server_id }} has completed successfully.",
+            "icon_emoji": ":rocket:"
+          }
+        status_code: 200
