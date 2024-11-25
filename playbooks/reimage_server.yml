@@ -1,0 +1,28 @@
+---
+- name: Re-image server using TSW API
+  hosts: localhost
+  gather_facts: no
+  vars:
+    api_url: "https://api.tsw.io/v2/Metal/{{ server_id }}/Reinstall"
+    api_key: "{{ lookup('env', 'TSW_API_KEY') }}"
+  tasks:
+    - name: Validate that server_id is provided
+      fail:
+        msg: "The variable 'server_id' must be provided."
+      when: server_id is undefined or server_id == ""
+
+    - name: Re-image the server via TSW API
+      uri:
+        url: "{{ api_url }}"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ api_key }}"
+          Content-Type: "application/json"
+        body: "{{ reinstall_payload | to_json }}"
+        status_code: 200
+        validate_certs: yes
+      register: result
+
+    - name: Debug response from TSW API
+      debug:
+        var: result.json
